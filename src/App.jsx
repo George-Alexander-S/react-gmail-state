@@ -1,6 +1,6 @@
 import Header from './components/Header'
 import initialEmails from './data/emails'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import './styles/App.css'
 
@@ -10,6 +10,10 @@ function App() {
 
   const [emails, setEmails] = useState(initialEmails);
 
+  const [unreadOnly, setUnread] = useState(false);
+
+  const [hiddenEmails, setHiddenEmails] = useState(initialEmails)
+
   const toggleRead = (thisId) => {
     const readEmail = emails.map((email) => {
       if (email.id === thisId) {
@@ -17,7 +21,7 @@ function App() {
       }
       return email
     })
-    setEmails(readEmail)
+    setHiddenEmails(readEmail)
   }
 
   const toggleStar = (thisId) => {
@@ -28,6 +32,31 @@ function App() {
       return email
     })
     setEmails(starrMail)
+  }
+
+  // const hideRead = () => {
+  //   console.log(unreadOnly)
+  //   setUnread(!unreadOnly);
+  //   unreadEmail(!unreadOnly)
+  //   console.log(unreadOnly)
+  // }
+
+  const hideRead = () => {
+    setUnread(unreadOnly => !unreadOnly)
+  }
+
+  useEffect(() => {
+    unreadEmail()
+  }, [unreadOnly])
+
+  const unreadEmail = () => {
+    if (unreadOnly) {
+      const unread = emails.filter(email => email.read === false)
+      setHiddenEmails(unread)
+    }
+    else {
+      setHiddenEmails(emails)
+    }
   }
   
   return (
@@ -55,13 +84,12 @@ function App() {
             <input
               id="hide-read"
               type="checkbox"
-              checked={false}
-              // onChange={() => {}}
+              onChange={() => hideRead()}
             />
           </li>
         </ul>
       </nav>
-      <main className="emails">{emails.map((email) => (
+      <main className="emails">{hiddenEmails.map((email) => (
         <>
         <li className={`email ${email.read ? 'read' : 'unread'}`} key={email.id}>
         <div className="select">
