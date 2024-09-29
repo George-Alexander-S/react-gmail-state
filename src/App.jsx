@@ -13,6 +13,8 @@ function App() {
   const [unreadOnly, setUnread] = useState(false);
 
   const [emails, setEmails] = useState(initialEmails)
+  console.log(emails.length)
+
 
   const toggleRead = (thisId) => {
     const readEmail = emails.map((email) => {
@@ -40,7 +42,7 @@ function App() {
 
   useEffect(() => {
     unreadEmail()
-  }, [unreadOnly, originalEmails]) // Omg, ofc I can pass more conditions to useEffect
+  }, [unreadOnly, originalEmails])
 
   const unreadEmail = () => {
     if (unreadOnly) {
@@ -51,6 +53,8 @@ function App() {
       setEmails(originalEmails)
     }
   }
+
+  let starrCount = 0
   
   return (
     <div className="app">
@@ -62,14 +66,18 @@ function App() {
             // onClick={() => {}}
           >
             <span className="label">Inbox</span>
-            <span className="count">?</span>
+            <span className="count">{emails.length}</span>
           </li>
           <li
             className="item"
             // onClick={() => {}}
           >
             <span className="label">Starred</span>
-            <span className="count">?</span>
+            <span className="count">{emails.map((email) => {
+              if (email.starred) {
+                starrCount ++
+              }
+            })}{starrCount}</span>
           </li>
 
           <li className="item toggle">
