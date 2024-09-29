@@ -9,19 +9,27 @@ function App() {
   console.log(initialEmails)
 
   const [emails, setEmails] = useState(initialEmails);
-  // const [read, setRead] = useState()
+
+  const toggleRead = (thisId) => {
+    const readEmail = emails.map((email) => {
+      if (email.id === thisId) {
+        return {...email, read: !email.read}
+      }
+      return email
+    })
+    setEmails(readEmail)
+  }
+
+  const toggleStar = (thisId) => {
+    const starrMail = emails.map((email) => {
+      if (email.id === thisId) {
+        return {...email, starred: !email.starred}
+      }
+      return email
+    })
+    setEmails(starrMail)
+  }
   
-  // const toggleRead = () => {
-  //   if(read === true) {
-  //     setRead(false)
-  //   }
-  //   else if (read === false) {
-  //     setRead(true)
-  //   }
-  // };
-
-  // const readstatus = ['read', 'unread']
-
   return (
     <div className="app">
       <Header />
@@ -59,12 +67,15 @@ function App() {
         <div className="select">
           <input className="select-checkbox"
           type="checkbox"
-          // onClick={toggleRead(email.read)}
+          checked={email.read}
+          onChange={() => toggleRead(email.id)}
           />
         </div>
         <div className="star">
           <input className="star-checkbox"
-          type="checkbox"  checked={email.starred === true ? `isChecked` : ``}
+          type="checkbox"
+          checked={email.starred}
+          onChange={() => toggleStar(email.id)}
           />
         </div>
         <div className="sender">{email.sender}</div>
@@ -76,17 +87,5 @@ function App() {
     </div>
   )
 }
-
-// function ListEmails () {
-//   return (
-//     <ul>
-//       {
-//         initialEmails.map((email) => {
-//           return <li key={email.id}>{email.title}</li>
-//         })
-//       }
-//     </ul>
-//   )
-// }
 
 export default App
