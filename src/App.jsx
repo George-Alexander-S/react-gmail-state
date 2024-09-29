@@ -8,11 +8,11 @@ function App() {
   // Use initialEmails for state
   console.log(initialEmails)
 
-  const [emails, setEmails] = useState(initialEmails);
+  const [originalEmails, setOriginalEmails] = useState(initialEmails);
 
   const [unreadOnly, setUnread] = useState(false);
 
-  const [hiddenEmails, setHiddenEmails] = useState(initialEmails)
+  const [emails, setEmails] = useState(initialEmails)
 
   const toggleRead = (thisId) => {
     const readEmail = emails.map((email) => {
@@ -21,7 +21,7 @@ function App() {
       }
       return email
     })
-    setHiddenEmails(readEmail)
+    setEmails(readEmail)
   }
 
   const toggleStar = (thisId) => {
@@ -34,13 +34,6 @@ function App() {
     setEmails(starrMail)
   }
 
-  // const hideRead = () => {
-  //   console.log(unreadOnly)
-  //   setUnread(!unreadOnly);
-  //   unreadEmail(!unreadOnly)
-  //   console.log(unreadOnly)
-  // }
-
   const hideRead = () => {
     setUnread(unreadOnly => !unreadOnly)
   }
@@ -52,10 +45,10 @@ function App() {
   const unreadEmail = () => {
     if (unreadOnly) {
       const unread = emails.filter(email => email.read === false)
-      setHiddenEmails(unread)
+      setEmails(unread)
     }
     else {
-      setHiddenEmails(emails)
+      setEmails(originalEmails)
     }
   }
   
@@ -89,7 +82,7 @@ function App() {
           </li>
         </ul>
       </nav>
-      <main className="emails">{hiddenEmails.map((email) => (
+      <main className="emails">{emails.map((email) => (
         <>
         <li className={`email ${email.read ? 'read' : 'unread'}`} key={email.id}>
         <div className="select">
