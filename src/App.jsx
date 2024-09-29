@@ -21,7 +21,7 @@ function App() {
       }
       return email
     })
-    setEmails(readEmail)
+    setOriginalEmails(readEmail)
   }
 
   const toggleStar = (thisId) => {
@@ -31,7 +31,7 @@ function App() {
       }
       return email
     })
-    setEmails(starrMail)
+    setOriginalEmails(starrMail)
   }
 
   const hideRead = () => {
@@ -40,11 +40,11 @@ function App() {
 
   useEffect(() => {
     unreadEmail()
-  }, [unreadOnly])
+  }, [unreadOnly, originalEmails]) // Omg, ofc I can pass more conditions to useEffect
 
   const unreadEmail = () => {
     if (unreadOnly) {
-      const unread = emails.filter(email => email.read === false)
+      const unread = originalEmails.filter(email => email.read === false)
       setEmails(unread)
     }
     else {
